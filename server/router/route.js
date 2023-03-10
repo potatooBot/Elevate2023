@@ -5,6 +5,7 @@ const router = Router();
 import * as controller from '../controllers/appController.js';
 import { registerMail } from '../controllers/mailer.js'
 import Auth, { localVariables } from '../middleware/auth.js';
+import { initPayment, paymentSuccess } from "../controllers/paymentController.js";
 
 
 
@@ -12,7 +13,10 @@ import Auth, { localVariables } from '../middleware/auth.js';
 router.route('/register').post(controller.register); // register user
 router.route('/registerMail').post(registerMail); // send the email
 router.route('/authenticate').post(controller.verifyUser, (req, res) => res.end()); // authenticate user
-router.route('/login').post(controller.verifyUser,controller.login); // login in app
+router.route('/login').post(controller.verifyUser, controller.login); // login in app
+router.post('/payment/razorpay/init', initPayment) //start the payment
+router.post('/payment/razorpay/success', paymentSuccess) //final payment done
+
 
 /** GET Methods */
 router.route('/user/:username').get(controller.getUser) // user with username
